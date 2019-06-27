@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -17,6 +19,7 @@ public class CreateAccount extends AppCompatActivity {
     Button create;
     EditText editText;
     Spinner spinner;
+    String AccountHead;
     private firebaseEntryClass firebaseentryclass;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,11 +28,35 @@ public class CreateAccount extends AppCompatActivity {
         create = findViewById(R.id.createaccount);
         editText = findViewById(R.id.editText);
         spinner = findViewById(R.id.spinner);
+        AccountHead = "Choose your head";
+        String[] AccountsHead = {"Choose your head","Asset","Liability","Revenue",
+                "Expensive","Owner Capital","Owner Withdrawal"};
+        ArrayAdapter<String> AccountAdapter = new ArrayAdapter<String>(CreateAccount.this
+                ,android.R.layout.simple_list_item_1,AccountsHead);
+        spinner.setAdapter(AccountAdapter);
         firebaseentryclass = new firebaseEntryClass();
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                AccountHead = spinner.getSelectedItem().toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if(!AccountHead.equals("Choose your head")){
+                    AccountDB();
+                    dialog();
+                }
+                else{
+                    Toast.makeText(CreateAccount.this, "Select an Account Head", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -39,7 +66,7 @@ public class CreateAccount extends AppCompatActivity {
     }
 
     private void AccountDB(){
-        
+
 
 
     }
